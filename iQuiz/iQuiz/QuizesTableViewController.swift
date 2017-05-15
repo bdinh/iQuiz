@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class QuizesTableViewController: UITableViewController {
     
@@ -15,9 +16,39 @@ class QuizesTableViewController: UITableViewController {
     let descriptions = ["This is the Math section", "This is the Marvel section", "This is the Science section"]
     var selectedSubject = -1
     
-
+    let tedsURL = "https://tednewardsandbox.site44.com/questions.json"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Alamofire.request(tedsURL).validate().responseJSON { response in
+            switch response.result {
+            case .success:
+                print("Validation Successful")
+                if let JSON = response.result.value {
+//                    print("JSON: \(JSON)")
+                    print(JSON)
+//                    let resultsDictionary = JSON as! NSDictionary
+//                    print(resultsDictionary)
+                }
+            case .failure(let error):
+                // Add better error handling
+                print("error with response status: \(response.result)")
+            }
+            
+            
+            
+//            print(response.request)  // original URL request
+//            print(response.response) // HTTP URL response
+//            print(response.data)     // server data
+//            print(response.result)   // result of response serialization
+            
+            // Do some error handling for http request
+//            print(response.result.value)
+//            if response.response
+            
+
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

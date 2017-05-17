@@ -24,9 +24,9 @@
 		E3F516A81EB9292900FCAC4F /* iQuizTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F516A71EB9292900FCAC4F /* iQuizTests.swift */; };
 		E3F516B31EB9292900FCAC4F /* iQuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F516B21EB9292900FCAC4F /* iQuizUITests.swift */; };
 		E3F516C11EBB22D400FCAC4F /* ViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F516C01EBB22D400FCAC4F /* ViewControllerTableViewCell.swift */; };
-		E3F516C31EBB26C900FCAC4F /* Math.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F516C21EBB26C900FCAC4F /* Math.png */; };
-		E3F516C51EBB26CF00FCAC4F /* Science.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F516C41EBB26CF00FCAC4F /* Science.png */; };
-		E3F516C71EBB26D400FCAC4F /* Marvel.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F516C61EBB26D400FCAC4F /* Marvel.png */; };
+		E3F516C31EBB26C900FCAC4F /* Mathematics.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F516C21EBB26C900FCAC4F /* Mathematics.png */; };
+		E3F516C51EBB26CF00FCAC4F /* Science!.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F516C41EBB26CF00FCAC4F /* Science!.png */; };
+		E3F516C71EBB26D400FCAC4F /* Marvel Super Heroes.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F516C61EBB26D400FCAC4F /* Marvel Super Heroes.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,9 +74,9 @@
 		E3F516B21EB9292900FCAC4F /* iQuizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iQuizUITests.swift; sourceTree = "<group>"; };
 		E3F516B41EB9292900FCAC4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3F516C01EBB22D400FCAC4F /* ViewControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerTableViewCell.swift; sourceTree = "<group>"; };
-		E3F516C21EBB26C900FCAC4F /* Math.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Math.png; sourceTree = "<group>"; };
-		E3F516C41EBB26CF00FCAC4F /* Science.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Science.png; sourceTree = "<group>"; };
-		E3F516C61EBB26D400FCAC4F /* Marvel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marvel.png; sourceTree = "<group>"; };
+		E3F516C21EBB26C900FCAC4F /* Mathematics.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mathematics.png; sourceTree = "<group>"; };
+		E3F516C41EBB26CF00FCAC4F /* Science!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Science!.png"; sourceTree = "<group>"; };
+		E3F516C61EBB26D400FCAC4F /* Marvel Super Heroes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Marvel Super Heroes.png"; sourceTree = "<group>"; };
 		EA4434AEC7F7C8D2F67EF5C7 /* Pods-iQuiz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iQuiz.release.xcconfig"; path = "Pods/Target Support Files/Pods-iQuiz/Pods-iQuiz.release.xcconfig"; sourceTree = "<group>"; };
 		F196571013118C0DB61920C2 /* Pods_iQuiz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iQuiz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -165,9 +165,9 @@
 				E3CDCBC11EC435D7005EFA71 /* QuestionViewController.swift */,
 				E3F516C01EBB22D400FCAC4F /* ViewControllerTableViewCell.swift */,
 				E3F516991EB9292900FCAC4F /* Assets.xcassets */,
-				E3F516C21EBB26C900FCAC4F /* Math.png */,
-				E3F516C41EBB26CF00FCAC4F /* Science.png */,
-				E3F516C61EBB26D400FCAC4F /* Marvel.png */,
+				E3F516C21EBB26C900FCAC4F /* Mathematics.png */,
+				E3F516C41EBB26CF00FCAC4F /* Science!.png */,
+				E3F516C61EBB26D400FCAC4F /* Marvel Super Heroes.png */,
 				E3F5169B1EB9292900FCAC4F /* LaunchScreen.storyboard */,
 				E3F5169E1EB9292900FCAC4F /* Info.plist */,
 				E3894D201ECAB8640029DDA9 /* QuizSubject.swift */,
@@ -313,9 +313,9 @@
 			files = (
 				E3F5169D1EB9292900FCAC4F /* LaunchScreen.storyboard in Resources */,
 				E3F5169A1EB9292900FCAC4F /* Assets.xcassets in Resources */,
-				E3F516C51EBB26CF00FCAC4F /* Science.png in Resources */,
-				E3F516C71EBB26D400FCAC4F /* Marvel.png in Resources */,
-				E3F516C31EBB26C900FCAC4F /* Math.png in Resources */,
+				E3F516C51EBB26CF00FCAC4F /* Science!.png in Resources */,
+				E3F516C71EBB26D400FCAC4F /* Marvel Super Heroes.png in Resources */,
+				E3F516C31EBB26C900FCAC4F /* Mathematics.png in Resources */,
 				E3F516981EB9292900FCAC4F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

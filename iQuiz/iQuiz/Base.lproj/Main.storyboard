@@ -65,6 +65,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Upo-yt-hsE">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iPp-CE-0UN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -269,7 +272,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ygg-OR-LVR"/>
-        <segue reference="S2b-zI-k5k"/>
+        <segue reference="OTy-Np-gan"/>
+        <segue reference="qDd-WU-8xH"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -15,53 +15,119 @@ class QuizesTableViewController: UITableViewController {
     var subjects: [QuizSubject] = []
     
     
-    let images = ["Math", "Marvel", "Science"]
+    var images: [String] = []
     var selectedSubject = -1
-    
-    let tedsURL = "https://tednewardsandbox.site44.com/questions.json"
-    
+    var URL = "https://tednewardsandbox.site44.com/questions.json"
+    // https://tednewardsandbox.site44.com/questions.json
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Alamofire.request(tedsURL).validate().responseJSON { response in
+        self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
+        attemptDownload()
+    }
+    
+    func attemptDownload() {
+        Alamofire.request(URL).validate().responseJSON { response in
             switch response.result {
             case .success:
                 print("Validation Successful")
-//                self.setupTable()
+                self.deleteLocalData()
                 self.downloadQuizes(response)
-//                self.storeCoreData()
                 self.tableView.reloadData()
+                self.storeCoreData()
             case .failure(let error):
                 print(error)
-//                self.loadLocalData()
-                // load in local storage
+                self.loadLocalData()
+                self.tableView.reloadData()
             }
-
         }
     }
     
+    func handleRefresh(refreshControl: UIRefreshControl) {
+        // Do some reloading of data and update the table view's data source
+        // Fetch more objects from a web service, for example...
+        
+        // Simply adding an object to the data source for this example
+        loadLocalData()
+        self.tableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
+    
+    func deleteLocalData() {
+        subjects = []
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let requestSubject = NSFetchRequest<NSFetchRequestResult>(entityName: "Subjects")
+        let requestQuestion = NSFetchRequest<NSFetchRequestResult>(entityName: "Questions")
+        requestSubject.returnsObjectsAsFaults = false
+        requestQuestion.returnsObjectsAsFaults = false
+        do {
+            print("deleting all contents")
+            let deleteSubject = NSBatchDeleteRequest(fetchRequest: requestSubject)
+            let deleteQuestion = NSBatchDeleteRequest(fetchRequest: requestQuestion)
+            try context.execute(deleteSubject)
+            try context.execute(deleteQuestion)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 
-//    func loadLocatData() {
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        let context = appDelegate.persistentContainer.viewContext
-//        
-//        let requestSubject = NSFetchRequest<NSFetchRequestResult>(entityName: "Subjects")
-//        let requestQuestion = NSFetchRequest<NSFetchRequestResult>(entityName: "Questions")
-//        
-//        requestSubject.returnsObjectsAsFaults = false
-//        requestQuestion.returnsObjectsAsFaults = false
-//        do {
-//            let requestSubjects = try context.fetch(requestSubject)
-//            
-//            if requestSubjects.count > 0 {
-//                
-//            }
-//        } catch let error as NSError  {
-//            print("Error in saving data. Error: \(error)")
-//        }
-//        
-//
-//    }
+    func loadLocalData() {
+        subjects = []
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+                
+        let requestSubject = NSFetchRequest<NSFetchRequestResult>(entityName: "Subjects")
+        let requestQuestion = NSFetchRequest<NSFetchRequestResult>(entityName: "Questions")
+        
+        requestSubject.returnsObjectsAsFaults = false
+        requestQuestion.returnsObjectsAsFaults = false
+        do {
+            let requestSubjects = try context.fetch(requestSubject)
+            let requestQuestions = try context.fetch(requestQuestion)
+            
+            if requestSubjects.count > 0 && requestQuestions.count > 0 {
+                for subs in requestSubjects as! [NSManagedObject] {
+                    let addedSubject = QuizSubject()
+                    var questionList: [QuizQuestion] = []
+                    if let title = subs.value(forKey: "title") as? String {
+                        addedSubject.title = title
+                        for question in requestQuestions as! [NSManagedObject] {
+                            let addedQuestion = QuizQuestion()
+                            if let qTitle = question.value(forKey: "title") as? String {
+                                if title == qTitle {
+                                    if let qQuestion = question.value(forKey: "question") as? String {
+                                        addedQuestion.question = qQuestion
+                                    }
+                                    if let qAnswer = question.value(forKey: "answer") as? String {
+                                        addedQuestion.answer = qAnswer
+                                    }
+                                    if let qChoices = question.value(forKey: "choices") as? String {
+                                        let choices = qChoices.components(separatedBy: "-")
+                                        addedQuestion.choices = choices
+                                    }
+                                    questionList.append(addedQuestion)
+                                }
+                            }
+                        }
+                    }
+                    if let icon = subs.value(forKey: "icon") as? String {
+                        images.append(icon)
+                    }
+                    
+                    if let description = subs.value(forKey: "desc") as? String {
+                        addedSubject.description = description
+                    }
+                    addedSubject.questions = questionList
+                    subjects.append(addedSubject)
+                }
+            }
+        } catch let error as NSError  {
+            print("Error in saving data. Error: \(error)")
+        }
+    }
+    
     
     func storeCoreData() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -71,31 +137,27 @@ class QuizesTableViewController: UITableViewController {
             let storeSubject = NSEntityDescription.insertNewObject(forEntityName: "Subjects", into: context)
             
             storeSubject.setValue(subjects[i].title, forKey: "title")
-            storeSubject.setValue(subjects[i].questions, forKey: "question")
+            
+//            storeSubject.setValue(subjects[i].questions, forKey: "question")
             storeSubject.setValue(subjects[i].title.lowercased() + ".png", forKey: "icon")
             storeSubject.setValue(subjects[i].description, forKey: "desc")
             let currentSubject = subjects[i]
             for j in 0...currentSubject.questions.count - 1 {
-                let storeQuestions = NSEntityDescription.insertNewObject(forEntityName: "Question", into: context)
+                let choicesString = subjects[i].questions[j].choices.joined(separator: "-")
+                let storeQuestions = NSEntityDescription.insertNewObject(forEntityName: "Questions", into: context)
                 storeQuestions.setValue(subjects[i].title, forKey: "title")
                 storeQuestions.setValue(currentSubject.questions[j].question, forKey: "question")
-                storeQuestions.setValue(currentSubject.questions[j].choices, forKey: "choices")
+                storeQuestions.setValue(choicesString, forKey: "choices")
                 storeQuestions.setValue(currentSubject.questions[j].answer, forKey: "answer")
             }
-
         }
         do {
             try context.save()
         } catch let error as NSError  {
             print("Error in saving data. Error: \(error)")
         }
-    
+        
     }
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
     @IBAction func Settings(_ sender: Any) {
         let alert = UIAlertController(title: "Settings", message: "Enter new url to update questions.", preferredStyle: .alert)
@@ -104,21 +166,15 @@ class QuizesTableViewController: UITableViewController {
         }
         
         let update = UIAlertAction(title: "Update", style: .default) { (_) in
-            // update storage
-            // request from server
-            self.tableView.reloadData()
+            if let text = (alert.textFields![0] as UITextField).text {
+                self.URL = text
+                self.attemptDownload()
+            }
         }
 
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(update)
         alert.addAction(cancel)
-    
-//        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
-//            alert.dismiss(animated: true, completion: nil)
-//        }))
-//        
-        
-        
         self.present(alert, animated: true, completion: nil)
         
         
@@ -126,7 +182,6 @@ class QuizesTableViewController: UITableViewController {
 
     
     func downloadQuizes(_ response: DataResponse<Any>) {
-        
         if let JSON = response.result.value {
             if let dictionary = JSON as? [Dictionary<String, AnyObject>] {
                 for i in 0...dictionary.count - 1 {
@@ -137,6 +192,7 @@ class QuizesTableViewController: UITableViewController {
                     }
                     if let title = dictionary[i]["title"] as? String {
                         addedSubject.title = title
+                        images.append(title)
                     }
                     if let questions = dictionary[i]["questions"] as? [Dictionary<String, AnyObject>] {
                         for j in 0...questions.count - 1 {

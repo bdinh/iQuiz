@@ -9,12 +9,11 @@
     <entity name="Subjects" representedClassName="Subjects" syncable="YES" codeGenerationType="class">
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Questions" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Subjects" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="Questions" positionX="-54" positionY="18" width="128" height="105"/>
+        <element name="Subjects" positionX="-63" positionY="-18" width="128" height="105"/>
     </elements>
 </model>

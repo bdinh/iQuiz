@@ -9,13 +9,7 @@
 import UIKit
 
 class AnswerViewController: UIViewController {
-    let questions = [["What is 2 + 2?", "What is 1 * 9?", "What is 5 * 5?"],
-                     ["Peter Parker works as a photographer for:", "S.H.I.E.L.D.'s highest ranking agent is:", "Captain America was frozen in which war?"],
-                     ["Which of the following is a non metal that remains liquid at room temperature?","Decibel is the unit for?", "Atoms are composed of"]]
-    
-    let correctAnswers = [["4", "9", "25"],
-                          ["The Daily Bugle", "Nick Fury", "World War II"],
-                          ["Bromine", "intensity of sound", "electrons and nuclei"]]
+    var subjects: [QuizSubject] = []
     var userAnswer = ""
     var currentQuestionIndex = 0
     var subjectIndex = -1
@@ -23,31 +17,32 @@ class AnswerViewController: UIViewController {
     var subject = ""
     
     @IBOutlet weak var currentSubject: UILabel!
-
     @IBOutlet weak var currentQuestionDisplay: UILabel!
     @IBOutlet weak var correctAnswerDisplay: UILabel!
     @IBOutlet weak var userAnswerDisplay: UILabel!
     
     @IBAction func nextQuestion(_ sender: Any) {
-        if currentQuestionIndex + 1 == questions[subjectIndex].count {
+        if currentQuestionIndex + 1 == subjects[subjectIndex].questions.count {
             performSegue(withIdentifier: "FinalSummary", sender: self)
         } else {
             performSegue(withIdentifier: "remainingQuestion", sender: self)
         }
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         currentSubject.text = subject
-        currentQuestionDisplay.text = "Question: " + questions[subjectIndex][currentQuestionIndex]
-        correctAnswerDisplay.text = "Correct Answer: " + correctAnswers[subjectIndex][currentQuestionIndex]
-        userAnswerDisplay.text = "User Answer: " + userAnswer
-        if userAnswer == correctAnswers[subjectIndex][currentQuestionIndex] {
+        currentQuestionDisplay.text = "Question: " + subjects[subjectIndex].questions[currentQuestionIndex].question
+        var correctIndex: Int = Int(subjects[subjectIndex].questions[currentQuestionIndex].answer)! - 1
+        var correctAnswer: String = subjects[subjectIndex].questions[currentQuestionIndex].choices[correctIndex]
+        correctAnswerDisplay.text = "Correct Answer: " + correctAnswer
+        if userAnswer == "" {
+            userAnswer = subjects[subjectIndex].questions[currentQuestionIndex].choices[0]
+        }
+        if userAnswer == correctAnswer {
             totalCorrect += 1
         }
-
+        userAnswerDisplay.text = "User Answer: " + userAnswer
         // Do any additional setup after loading the view.
     }
 
@@ -64,11 +59,13 @@ class AnswerViewController: UIViewController {
             questionViewController.currentSubject = subject
             questionViewController.currentAnswerIndex = currentQuestionIndex + 1
             questionViewController.totalCorrect = totalCorrect
+            questionViewController.subjects = subjects
         } else if segue.identifier == "FinalSummary" {
             let finalViewController = segue.destination as! FinalViewController
             finalViewController.subjectIndex = subjectIndex
             finalViewController.subject = subject
             finalViewController.totalCorrect = totalCorrect
+            finalViewController.subjects = subjects
         }
     }
 

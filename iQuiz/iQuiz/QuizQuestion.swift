@@ -9,13 +9,13 @@
 import Foundation
 
 class QuizQuestion {
-    var question: String
-    var choices: [String]
-    var answer: String
+    var question: String = ""
+    var choices: [String] = []
+    var answer: String = ""
     
-    init(_ question: String, _ choices: [String], _ answer: String) {
-        self.question = question
-        self.choices = choices
-        self.answer = answer
-    }
+//    init(_ question: String, _ choices: [String], _ answer: String) {
+//        self.question = question
+//        self.choices = choices
+//        self.answer = answer
+//    }
 }

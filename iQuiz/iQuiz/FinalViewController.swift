@@ -10,14 +10,10 @@ import UIKit
 
 class FinalViewController: UIViewController {
     
-    let questions = [["What is 2 + 2?", "What is 1 * 9?", "What is 5 * 5?"],
-                     ["Peter Parker works as a photographer for:", "S.H.I.E.L.D.'s highest ranking agent is:", "Captain America was frozen in which war?"],
-                     ["Which of the following is a non metal that remains liquid at room temperature?","Decibel is the unit for?", "Atoms are composed of"]]
-    
     var subjectIndex = -1
     var totalCorrect = 0
     var subject = ""
-
+    var subjects: [QuizSubject] = []
 
     
     @IBOutlet weak var subjectDisplay: UILabel!
@@ -28,7 +24,7 @@ class FinalViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let totalPossible = questions[subjectIndex].count
+        let totalPossible = subjects[subjectIndex].questions.count
         subjectDisplay.text = subject
         if totalCorrect == totalPossible {
             descriptionDisplay.text = "Way to get it all right!"

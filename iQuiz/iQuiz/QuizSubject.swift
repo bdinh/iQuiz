@@ -10,14 +10,14 @@ import Foundation
 
 class QuizSubject {
     
-    var title: String
-    var description: String
-    var questions: [QuizQuestion]
+    var title: String = ""
+    var description: String = ""
+    var questions: [QuizQuestion] = []
     
-    init(_ title: String, _ description: String, _ questions: [QuizQuestion]) {
-        self.title = title
-        self.description = description
-        self.questions = questions
-    }
+//    init(_ title: String, _ description: String, _ questions: [QuizQuestion]) {
+//        self.title = title
+//        self.description = description
+//        self.questions = questions
+//    }
     
 }

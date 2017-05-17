@@ -8,64 +8,159 @@
 
 import UIKit
 import Alamofire
+import CoreData
 
 class QuizesTableViewController: UITableViewController {
     
-    let subjects = ["Mathematics", "Marvel Super Heroes", "Science"]
+    var subjects: [QuizSubject] = []
+    
+    
     let images = ["Math", "Marvel", "Science"]
-    let descriptions = ["This is the Math section", "This is the Marvel section", "This is the Science section"]
     var selectedSubject = -1
     
     let tedsURL = "https://tednewardsandbox.site44.com/questions.json"
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         Alamofire.request(tedsURL).validate().responseJSON { response in
             switch response.result {
             case .success:
                 print("Validation Successful")
-                if let JSON = response.result.value {
-//                    print("JSON: \(JSON)")
-                    print(JSON)
-//                    let resultsDictionary = JSON as! NSDictionary
-//                    print(resultsDictionary)
-                }
+//                self.setupTable()
+                self.downloadQuizes(response)
+//                self.storeCoreData()
+                self.tableView.reloadData()
             case .failure(let error):
-                // Add better error handling
-                print("error with response status: \(response.result)")
+                print(error)
+//                self.loadLocalData()
+                // load in local storage
             }
-            
-            
-            
-//            print(response.request)  // original URL request
-//            print(response.response) // HTTP URL response
-//            print(response.data)     // server data
-//            print(response.result)   // result of response serialization
-            
-            // Do some error handling for http request
-//            print(response.result.value)
-//            if response.response
-            
 
         }
+    }
+    
 
+//    func loadLocatData() {
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        let context = appDelegate.persistentContainer.viewContext
+//        
+//        let requestSubject = NSFetchRequest<NSFetchRequestResult>(entityName: "Subjects")
+//        let requestQuestion = NSFetchRequest<NSFetchRequestResult>(entityName: "Questions")
+//        
+//        requestSubject.returnsObjectsAsFaults = false
+//        requestQuestion.returnsObjectsAsFaults = false
+//        do {
+//            let requestSubjects = try context.fetch(requestSubject)
+//            
+//            if requestSubjects.count > 0 {
+//                
+//            }
+//        } catch let error as NSError  {
+//            print("Error in saving data. Error: \(error)")
+//        }
+//        
+//
+//    }
+    
+    func storeCoreData() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        for i in 0...subjects.count - 1 {
+            let storeSubject = NSEntityDescription.insertNewObject(forEntityName: "Subjects", into: context)
+            
+            storeSubject.setValue(subjects[i].title, forKey: "title")
+            storeSubject.setValue(subjects[i].questions, forKey: "question")
+            storeSubject.setValue(subjects[i].title.lowercased() + ".png", forKey: "icon")
+            storeSubject.setValue(subjects[i].description, forKey: "desc")
+            let currentSubject = subjects[i]
+            for j in 0...currentSubject.questions.count - 1 {
+                let storeQuestions = NSEntityDescription.insertNewObject(forEntityName: "Question", into: context)
+                storeQuestions.setValue(subjects[i].title, forKey: "title")
+                storeQuestions.setValue(currentSubject.questions[j].question, forKey: "question")
+                storeQuestions.setValue(currentSubject.questions[j].choices, forKey: "choices")
+                storeQuestions.setValue(currentSubject.questions[j].answer, forKey: "answer")
+            }
+
+        }
+        do {
+            try context.save()
+        } catch let error as NSError  {
+            print("Error in saving data. Error: \(error)")
+        }
+    
+    }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
 
     @IBAction func Settings(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-        }))
+        let alert = UIAlertController(title: "Settings", message: "Enter new url to update questions.", preferredStyle: .alert)
+        alert.addTextField() { (textField) in
+            textField.placeholder = "Enter URL Here"
+        }
+        
+        let update = UIAlertAction(title: "Update", style: .default) { (_) in
+            // update storage
+            // request from server
+            self.tableView.reloadData()
+        }
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(update)
+        alert.addAction(cancel)
+    
+//        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
+//            alert.dismiss(animated: true, completion: nil)
+//        }))
+//        
+        
         
         self.present(alert, animated: true, completion: nil)
-
+        
+        
     }
+
+    
+    func downloadQuizes(_ response: DataResponse<Any>) {
+        
+        if let JSON = response.result.value {
+            if let dictionary = JSON as? [Dictionary<String, AnyObject>] {
+                for i in 0...dictionary.count - 1 {
+                    let addedSubject = QuizSubject()
+
+                    if let description = dictionary[i]["desc"] as? String {
+                        addedSubject.description = description
+                    }
+                    if let title = dictionary[i]["title"] as? String {
+                        addedSubject.title = title
+                    }
+                    if let questions = dictionary[i]["questions"] as? [Dictionary<String, AnyObject>] {
+                        for j in 0...questions.count - 1 {
+                            let addedQuestion = QuizQuestion()
+                            if let answer = questions[j]["answer"] as? String {
+                                addedQuestion.answer = answer
+                            }
+                            if let text = questions[j]["text"] as? String {
+                                addedQuestion.question = text
+                            }
+                            if let choices = questions[j]["answers"] as? [String] {
+                                addedQuestion.choices = choices
+                            }
+                            addedSubject.questions.append(addedQuestion)
+                        }
+                    }
+                    self.subjects.append(addedSubject)
+                }
+            }
+        }
+    }
+    
+
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -87,8 +182,8 @@ class QuizesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ViewControllerTableViewCell
         cell.myImage.image = UIImage(named: images[indexPath.row] + ".png")
-        cell.myLabel.text = subjects[indexPath.row]
-        cell.myDescription.text = descriptions[indexPath.row]
+        cell.myLabel.text = subjects[indexPath.row].title
+        cell.myDescription.text = subjects[indexPath.row].description
         return cell
     }
 
@@ -99,9 +194,14 @@ class QuizesTableViewController: UITableViewController {
             let selectedRow = tableView.indexPath(for: cell)!.row
             let questionViewController = segue.destination as! QuestionViewController
             questionViewController.subjectIndex = selectedRow
-            questionViewController.currentSubject = subjects[selectedRow]
+            questionViewController.currentSubject = subjects[selectedRow].title
+            
+            
+            questionViewController.subjects = subjects
         }
     }
+    
+    
     
 
     /*

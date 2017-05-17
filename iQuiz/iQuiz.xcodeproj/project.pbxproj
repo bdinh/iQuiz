@@ -12,6 +12,7 @@
 		DC06B11C2CCEE5ADF0B263A9 /* Pods_iQuiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F196571013118C0DB61920C2 /* Pods_iQuiz.framework */; };
 		E3894D211ECAB8640029DDA9 /* QuizSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3894D201ECAB8640029DDA9 /* QuizSubject.swift */; };
 		E3894D231ECAB8730029DDA9 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3894D221ECAB8730029DDA9 /* QuizQuestion.swift */; };
+		E3894D291ECB9C870029DDA9 /* localStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E3894D271ECB9C870029DDA9 /* localStorage.xcdatamodeld */; };
 		E3CDCBC21EC435D7005EFA71 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDCBC11EC435D7005EFA71 /* QuestionViewController.swift */; };
 		E3CDCBC41EC4BEF9005EFA71 /* QuizesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDCBC31EC4BEF9005EFA71 /* QuizesTableViewController.swift */; };
 		E3CDCBC61EC4CC33005EFA71 /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDCBC51EC4CC33005EFA71 /* AnswerViewController.swift */; };
@@ -55,6 +56,7 @@
 		CE66746D84E73BDB1B432D05 /* Pods_iQuizTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iQuizTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3894D201ECAB8640029DDA9 /* QuizSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizSubject.swift; sourceTree = "<group>"; };
 		E3894D221ECAB8730029DDA9 /* QuizQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
+		E3894D281ECB9C870029DDA9 /* localStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = localStorage.xcdatamodel; sourceTree = "<group>"; };
 		E3CDCBC11EC435D7005EFA71 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		E3CDCBC31EC4BEF9005EFA71 /* QuizesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizesTableViewController.swift; sourceTree = "<group>"; };
 		E3CDCBC51EC4CC33005EFA71 /* AnswerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				E3F5169E1EB9292900FCAC4F /* Info.plist */,
 				E3894D201ECAB8640029DDA9 /* QuizSubject.swift */,
 				E3894D221ECAB8730029DDA9 /* QuizQuestion.swift */,
+				E3894D271ECB9C870029DDA9 /* localStorage.xcdatamodeld */,
 			);
 			path = iQuiz;
 			sourceTree = "<group>";
@@ -484,6 +487,7 @@
 				E3CDCBC21EC435D7005EFA71 /* QuestionViewController.swift in Sources */,
 				E3894D211ECAB8640029DDA9 /* QuizSubject.swift in Sources */,
 				E3F516C11EBB22D400FCAC4F /* ViewControllerTableViewCell.swift in Sources */,
+				E3894D291ECB9C870029DDA9 /* localStorage.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,6 +767,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E3894D271ECB9C870029DDA9 /* localStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E3894D281ECB9C870029DDA9 /* localStorage.xcdatamodel */,
+			);
+			currentVersion = E3894D281ECB9C870029DDA9 /* localStorage.xcdatamodel */;
+			path = localStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E3F516871EB9292900FCAC4F /* Project object */;
 }
